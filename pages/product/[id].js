@@ -34,13 +34,13 @@ export default function ProductDetail({ product }) {
     setTimeout(() => setBtnText('Add to Cart'), 1500)
   }
 
-  return (
+  return (  
     <>
       <Head>
         <title>ShopZone | {product.title}</title>
       </Head>
 
-      <div className="container">
+      <div className="container"> 
         <Link href="/" className={styles.back}>
           ← Back to Home
         </Link>
@@ -87,4 +87,4 @@ export default function ProductDetail({ product }) {
       </div>
     </>
   )
-}
+}                                             
