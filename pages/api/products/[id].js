@@ -1,4 +1,4 @@
-import { API_BASE } from '../../../lib/apiUrl'
+import { API_BASE, fetchWithTimeout } from '../../../lib/apiUrl'
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -9,11 +9,13 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing product id' })
   }
   try {
-    const response = await fetch(`${API_BASE}/products/${id}`, {
-      headers: { 'Accept': 'application/json' }
-    })
+    const response = await fetchWithTimeout(
+      `${API_BASE}/products/${id}`,
+      { headers: { Accept: 'application/json' } },
+      15000
+    )
     const data = await response.json()
-    if (!data || !data.id) {
+    if (!response.ok || !data || !data.id) {
       return res.status(404).json({ error: 'Product not found' })
     }
     res.status(200).json(data)

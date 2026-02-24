@@ -3,20 +3,39 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ProductCard from '../components/ProductCard'
 import { setProducts, setSearchQuery, selectFilteredProducts } from '../redux/productsSlice'
-import { API_BASE } from '../lib/apiUrl'
+import { getAppOrigin, fetchWithTimeout, API_BASE } from '../lib/apiUrl'
 import styles from './index.module.css'
 
-export async function getServerSideProps() {
+async function fetchProductsList(req) {
   try {
-    const res = await fetch(`${API_BASE}/products`, {
-      headers: { Accept: 'application/json' }
-    })
-    if (!res.ok) return { props: { products: [] } }
-    const data = await res.json()
-    return { props: { products: Array.isArray(data) ? data : [] } }
-  } catch (e) {
-    return { props: { products: [] } }
-  }
+    const origin = getAppOrigin(req)
+    const res = await fetchWithTimeout(
+      `${origin}/api/products`,
+      { headers: { Accept: 'application/json' } },
+      20000
+    )
+    if (res.ok) {
+      const data = await res.json()
+      return Array.isArray(data) ? data : []
+    }
+  } catch (_) {}
+  try {
+    const res = await fetchWithTimeout(
+      `${API_BASE}/products`,
+      { headers: { Accept: 'application/json' } },
+      15000
+    )
+    if (res.ok) {
+      const data = await res.json()
+      return Array.isArray(data) ? data : []
+    }
+  } catch (_) {}
+  return []
+}
+
+export async function getServerSideProps(context) {
+  const products = await fetchProductsList(context.req)
+  return { props: { products } }
 }
 
 export default function Home({ products }) {
