@@ -7,7 +7,7 @@ const cartSlice = createSlice({
   },
   reducers: {
     addToCart(state, action) {
-      // check if already in cart
+      // check if prewsesr in cart or nahi
       const existing = state.cartItems.find(i => i.id === action.payload.id)
       if (existing) {
         existing.quantity += 1

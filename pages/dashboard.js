@@ -11,7 +11,7 @@ export default function Dashboard() {
   const total = useSelector(selectCartTotal)
   const [sortAsc, setSortAsc] = useState(true)
 
-  // make a copy so we dont mutate redux state
+  // made a copyii 
   const sorted = [...products].sort((a, b) => {
     return sortAsc ? a.price - b.price : b.price - a.price
   })
