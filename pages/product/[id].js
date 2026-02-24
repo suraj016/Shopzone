@@ -3,14 +3,16 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addToCart } from '../../redux/cartSlice'
-import { getAppOrigin } from '../../lib/apiUrl'
+import { API_BASE } from '../../lib/apiUrl'
 import styles from './product.module.css'
 
 export async function getServerSideProps(context) {
   const { params } = context
   try {
-    const origin = getAppOrigin(context.req)
-    const res = await fetch(`${origin}/api/products/${params.id}`)
+    const res = await fetch(`${API_BASE}/products/${params.id}`, {
+      headers: { Accept: 'application/json' }
+    })
+    if (!res.ok) return { notFound: true }
     const product = await res.json()
     if (!product || !product.id) return { notFound: true }
     return { props: { product } }

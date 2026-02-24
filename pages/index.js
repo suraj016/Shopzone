@@ -3,13 +3,15 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ProductCard from '../components/ProductCard'
 import { setProducts, setSearchQuery, selectFilteredProducts } from '../redux/productsSlice'
-import { getAppOrigin } from '../lib/apiUrl'
+import { API_BASE } from '../lib/apiUrl'
 import styles from './index.module.css'
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   try {
-    const origin = getAppOrigin(context.req)
-    const res = await fetch(`${origin}/api/products`)
+    const res = await fetch(`${API_BASE}/products`, {
+      headers: { Accept: 'application/json' }
+    })
+    if (!res.ok) return { props: { products: [] } }
     const data = await res.json()
     return { props: { products: Array.isArray(data) ? data : [] } }
   } catch (e) {
