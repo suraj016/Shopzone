@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }) {
         marginTop: '40px',
         background: 'white'
       }}>
-        ShopZone footer 
+       2026 ShopZone
       </footer>
     </Provider>
   )

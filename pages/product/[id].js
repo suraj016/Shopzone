@@ -20,7 +20,7 @@ export default function ProductDetail({ product }) {
   const dispatch = useDispatch()
   const [btnText, setBtnText] = useState('Add to Cart')
 
-  
+  // was debugging this earlier
   console.log(product)
 
   const handleAdd = () => {
@@ -67,7 +67,7 @@ export default function ProductDetail({ product }) {
             )}
 
             <p className={styles.price}>
-              ${product.price.toFixed(2)}
+              ${(product.price || 0).toFixed(2)}
             </p>
 
             <p className={styles.desc}>
@@ -87,4 +87,4 @@ export default function ProductDetail({ product }) {
       </div>
     </>
   )
-}                                             
+}

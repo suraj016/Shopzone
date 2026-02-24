@@ -89,7 +89,7 @@ export default function Dashboard() {
                         </span>
                       </td>
                       <td className={styles.priceCell}>
-                        ${prod.price.toFixed(2)}
+                        ${(prod.price || 0).toFixed(2)}
                       </td>
                     </tr>
                   ))}

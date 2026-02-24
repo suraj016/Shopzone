@@ -75,7 +75,7 @@ export default function Cart() {
                 <div className={styles.itemInfo}>
                   <p className={styles.itemTitle}>{item.title}</p>
                   <p className={styles.itemPrice}>
-                    ${item.price.toFixed(2)} each
+                    ${(item.price || 0).toFixed(2)} each
                   </p>
                 </div>
 
@@ -99,7 +99,7 @@ export default function Cart() {
                 </div>
 
                 <p className={styles.subtotal}>
-                  ${(item.price * item.quantity).toFixed(2)}
+                  ${((item.price || 0) * (item.quantity || 1)).toFixed(2)}
                 </p>
 
                 <button

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import { selectCartItemCount } from '../redux/cartSlice'
@@ -7,8 +8,11 @@ import styles from './Navbar.module.css'
 export default function Navbar() {
   const router = useRouter()
   const count = useSelector(selectCartItemCount)
+  const [mounted, setMounted] = useState(false)
 
-  
+  useEffect(() => setMounted(true), [])
+
+  // helper to check active link
   const isActive = (path) => router.pathname === path
 
   return (
@@ -41,7 +45,7 @@ export default function Navbar() {
             >
               Cart
             </Link>
-            {count > 0 && (
+            {mounted && count > 0 && (
               <span className={styles.badge}>{count}</span>
             )}
           </div>

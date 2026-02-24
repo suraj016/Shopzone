@@ -3,7 +3,7 @@ import productsReducer from './productsSlice'
 import cartReducer from './cartSlice'
 
 function loadCart() {
-  
+  // localStorage isn't available during SSR
   try {
     const saved = localStorage.getItem('cart')
     if (!saved) return undefined
@@ -31,7 +31,7 @@ store.subscribe(() => {
     console.log('cart updated', cartItems)
     localStorage.setItem('cart', JSON.stringify(cartItems))
   } catch(e) {
-    
+    // silently fail
   }
 })
 
