@@ -3,11 +3,12 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addToCart } from '../../redux/cartSlice'
+import { API_BASE } from '../../lib/apiUrl'
 import styles from './product.module.css'
 
 export async function getServerSideProps({ params }) {
   try {
-    const res = await fetch('https://fakestoreapi.com/products/' + params.id)
+    const res = await fetch(`${API_BASE}/products/${params.id}`)
     const product = await res.json()
     if (!product || !product.id) return { notFound: true }
     return { props: { product } }

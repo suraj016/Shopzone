@@ -3,11 +3,12 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ProductCard from '../components/ProductCard'
 import { setProducts, setSearchQuery, selectFilteredProducts } from '../redux/productsSlice'
+import { API_BASE } from '../lib/apiUrl'
 import styles from './index.module.css'
 
 export async function getServerSideProps() {
   try {
-    const res = await fetch('https://fakestoreapi.com/products')
+    const res = await fetch(`${API_BASE}/products`)
     const data = await res.json()
     return { props: { products: data } }
   } catch(e) {
