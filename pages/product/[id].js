@@ -3,16 +3,18 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addToCart } from '../../redux/cartSlice'
-import { API_BASE } from '../../lib/apiUrl'
+import { getAppOrigin } from '../../lib/apiUrl'
 import styles from './product.module.css'
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps(context) {
+  const { params } = context
   try {
-    const res = await fetch(`${API_BASE}/products/${params.id}`)
+    const origin = getAppOrigin(context.req)
+    const res = await fetch(`${origin}/api/products/${params.id}`)
     const product = await res.json()
     if (!product || !product.id) return { notFound: true }
     return { props: { product } }
-  } catch(e) {
+  } catch (e) {
     return { notFound: true }
   }
 }
