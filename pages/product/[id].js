@@ -3,17 +3,16 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addToCart } from '../../redux/cartSlice'
-import { getAppOrigin, fetchWithTimeout } from '../../lib/apiUrl'
+import { API_BASE, fetchWithTimeout } from '../../lib/apiUrl'
 import styles from './product.module.css'
 
 export async function getServerSideProps(context) {
   const { params } = context
   try {
-    const origin = getAppOrigin(context.req)
     const res = await fetchWithTimeout(
-      `${origin}/api/products/${params.id}`,
+      `${API_BASE}/products/${params.id}`,
       { headers: { Accept: 'application/json' } },
-      20000
+      15000
     )
     if (!res.ok) return { notFound: true }
     const product = await res.json()
