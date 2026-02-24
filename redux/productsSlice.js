@@ -1,10 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { API_BASE } from '../lib/apiUrl'
 
-export const fetchProducts = createAsyncThunk('products/fetch', async () => {
+export const fetchProducts = createAsyncThunk('products/fetch', async (_, { rejectWithValue }) => {
   console.log('fetching products...')
-  const res = await fetch('/api/products')
+  const res = await fetch(`${API_BASE}/products`)
   const data = await res.json()
-  return data
+  if (!res.ok) {
+    return rejectWithValue(data?.message || 'Failed to fetch')
+  }
+  return Array.isArray(data) ? data : []
 })
 
 const productsSlice = createSlice({
@@ -35,7 +39,7 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.status = 'failed'
-        state.error = action.error.message
+        state.error = action.payload || action.error?.message || 'Failed to load products'
       })
   }
 })
